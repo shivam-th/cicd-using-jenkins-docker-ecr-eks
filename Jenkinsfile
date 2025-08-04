@@ -32,16 +32,16 @@ pipeline {
                   echo 'Cleaning up Docker and Jenkins workspace...'
 
                   // Remove unused Docker data
-                  sh 'docker system prune -a -f'
+                  //sh 'docker system prune -a -f'
 
                   // Clean Jenkins workspace
-                  sh 'rm -rf /var/lib/jenkins/workspace/*'
+                  //sh 'rm -rf /var/lib/jenkins/workspace/*'
 
                   // Clear Jenkins cache
-                  sh 'rm -rf /var/lib/jenkins/.cache/*'
+                  //sh 'rm -rf /var/lib/jenkins/.cache/*'
 
                   // Clean system logs older than 3 days
-                  sh 'journalctl --vacuum-time=3d'
+                  //sh 'journalctl --vacuum-time=3d'
                     }
                 }
             }
