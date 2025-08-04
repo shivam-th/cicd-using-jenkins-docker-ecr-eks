@@ -26,11 +26,24 @@ pipeline {
         }
 
         
-        stage('Cleanup') {
-            steps {
-                echo 'Cleaning up workspace..'
-                cleanWs()
+        stage('System Cleanup') {
+          steps {
+              script {
+                  echo 'Cleaning up Docker and Jenkins workspace...'
+
+                  // Remove unused Docker data
+                  sh 'docker system prune -a -f'
+
+                  // Clean Jenkins workspace
+                  sh 'rm -rf /var/lib/jenkins/workspace/*'
+
+                  // Clear Jenkins cache
+                  sh 'rm -rf /var/lib/jenkins/.cache/*'
+
+                  // Clean system logs older than 3 days
+                  sh 'journalctl --vacuum-time=3d'
+                    }
+                }
             }
-        }
     }
 }
