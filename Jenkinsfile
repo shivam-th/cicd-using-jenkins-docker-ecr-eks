@@ -25,14 +25,6 @@ pipeline {
           }
         }
 
-        stage('Pushing to ECR') {
-        steps{  
-            script {
-                    sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin account_id.dkr.ecr.us-east-1.amazonaws.com'
-                    sh 'docker push ${registry}:$BUILD_NUMBER'
-            }
-            }
-        }
         
         stage('Cleanup') {
             steps {
