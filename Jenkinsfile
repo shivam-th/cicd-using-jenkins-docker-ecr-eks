@@ -1,7 +1,7 @@
 pipeline {
     agent any
       stages {
-        stage('Helm Depody') {
+        stage('Helm Dsepody') {
           steps {
             script {
               sh "kubectl get nodes"
