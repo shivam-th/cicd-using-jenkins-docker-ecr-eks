@@ -1,6 +1,6 @@
 pipeline {
     agent any
-  
+      stages {
         stage('Helm Deplody') {
           steps {
             script {
@@ -11,7 +11,7 @@ pipeline {
               //sh "helm upgrade first --install helm/mychart --namespace helm-deployment --set image.tag=$BUILD_NUMBER"
             }
           }
-        
+        } 
         
     }
 }
