@@ -32,6 +32,11 @@ build/
 ### VS Code ###
 .vscode/
 
-
+### instance key ###
+*.pem
+**/*.pem
 
 .Doc
+
+**/*.tfvar
+**/*.terraform
