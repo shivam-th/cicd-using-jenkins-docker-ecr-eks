@@ -34,13 +34,7 @@ pipeline {
           }
     }
 
-        stage('Helm Deploy') {
-          steps {
-            script {
-          sh "helm upgrade first --install helm/mychart --namespace helm-deployment --set image.tag=$BUILD_NUMBER"
-            }
-          }
-        }
+        
 
         stage('System Cleanup') {
           steps {
