@@ -29,7 +29,7 @@ pipeline {
           steps{  
               script {
                       sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 983877353540.dkr.ecr.us-east-1.amazonaws.com'
-                      sh 'docker push ${register}:$BUILD_NUMBER'
+                      sh 'docker push ${registry}:$BUILD_NUMBER'
               }
               }
            }
