@@ -37,6 +37,8 @@ pipeline {
         stage('Helm Deploy') {
           steps {
             script {
+              sh "kubectl apply -f aws-auth.yaml -n kube-system"
+              //sh "echo 'Hello'"
               //sh "kubectl version"
               sh "helm upgrade first --install helm/mychart --namespace helm-deployment --set image.tag=$BUILD_NUMBER"
             }
