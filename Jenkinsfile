@@ -10,7 +10,7 @@ pipeline {
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-eks-creds']]) {
                     sh '''
                         aws sts get-caller-identity
-                        aws eks update-kubeconfig --region $AWS_DEFAULT_REGION --name my-cluster
+                        aws eks update-kubeconfig --region us-east-1 --name my-cluster
                     '''
                 }
             }
@@ -48,11 +48,7 @@ pipeline {
         stage('Helm Deplo') {
           steps {
             script {
-              sh "kubectl get nodes"
-              //sh "kubectl apply -f aws-auth.yaml -n kube-system"
-              //sh "kubectl get nodes"
-              //sh "kubectl version"
-              //sh "helm upgrade first --install helm/mychart --namespace helm-deployment --set image.tag=$BUILD_NUMBER"
+              sh "helm upgrade first --install helm/mychart --namespace helm-deployment --set image.tag=$BUILD_NUMBER"
             }
           }
         }
