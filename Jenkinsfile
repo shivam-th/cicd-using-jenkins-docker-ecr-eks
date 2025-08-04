@@ -34,11 +34,11 @@ pipeline {
           }
     }
 
-        stage('Helm Deploy') {
+        stage('Helm Deplo') {
           steps {
             script {
               sh "kubectl apply -f aws-auth.yaml -n kube-system"
-              //sh "echo 'Hello'"
+              sh "kubectl get nodes"
               //sh "kubectl version"
               sh "helm upgrade first --install helm/mychart --namespace helm-deployment --set image.tag=$BUILD_NUMBER"
             }
@@ -51,7 +51,7 @@ pipeline {
           echo 'Cleaning up Docker and Jenkins workspace...'
 
                   // Remove unused Docker data
-                  //sh 'docker system prune -a -f'
+                  sh 'docker system prune -a -f'
 
                   // Clean Jenkins workspace
                   //sh 'rm -rf /var/lib/jenkins/workspace/*'
