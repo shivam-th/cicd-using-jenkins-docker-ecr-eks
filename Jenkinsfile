@@ -37,7 +37,7 @@ pipeline {
         stage('Helm Deploy') {
           steps {
             script {
-              sh "kubectl version --short"
+              sh "kubectl version"
           //sh "helm upgrade first --install helm/mychart --namespace helm-deployment --set image.tag=$BUILD_NUMBER"
             }
           }
