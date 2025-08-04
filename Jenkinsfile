@@ -1,47 +1,34 @@
 pipeline {
-   tools {
-        maven 'Maven3'
-    }
     agent any
-    environment {
+     environment {
         registry = "983877353540.dkr.ecr.us-east-1.amazonaws.com/cicd-using-jenkins-docker-ecr-eks-helm"
     }
-   
     stages {
-        stage('Cloning Git') {
+        stage('Checkout') {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/main']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '', url: 'https://github.com/akannan1087/docker-spring-boot']]])     
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/shivam-th/cicd-using-jenkins-docker-ecr-eks.git']])
             }
         }
-      stage ('Build') {
+        
+        stage ('Build') {
           steps {
             sh 'mvn clean install'           
             }
-      }
-    // Building Docker images
-    stage('Building image') {
-      steps{
-        script {
-          dockerImage = docker.build registry 
-          dockerImage.tag("$BUILD_NUMBER")
-        }
-      }
-    }
-   
-    // Uploading Docker images into AWS ECR
-    stage('Pushing to ECR') {
-     steps{  
-         script {
-                sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin account_id.dkr.ecr.us-east-1.amazonaws.com'
-                sh 'docker push account_id.dkr.ecr.us-east-1.amazonaws.com/my-docker-repo:$BUILD_NUMBER'
          }
-        }
-      }
-        stage ('Helm Deploy') {
-          steps {
+         
+         stage('Building image') {
+          steps{
             script {
-                sh "helm upgrade first --install mychart --namespace helm-deployment --set image.tag=$BUILD_NUMBER"
-                }
+              dockerImage = docker.build registry 
+              dockerImage.tag("$BUILD_NUMBER")
+            }
+          }
+        }
+        
+        stage('Cleanup') {
+            steps {
+                echo 'Cleaning up workspace...'
+                cleanWs()
             }
         }
     }
