@@ -27,7 +27,7 @@ pipeline {
           }
         }
 
-    stage('Building imae') {
+    stage('Building image') {
           steps {
             script {
               dockerImage = docker.build registry
@@ -50,7 +50,7 @@ pipeline {
             script {
               def ecrUri = "${registry}:${BUILD_NUMBER}"
               sh'''
-              sed "s|<ECR_fIMAGE_URI>|${ecrUri}|g" k8s/deployment.yaml| kubectl apply -f -
+              sed "s|<ECR_IMAGE_URI>|${ecrUri}|g" k8s/deployment.yaml| kubectl apply -f -
               kubectl apply -f k8s/service.yaml
               '''
             }
