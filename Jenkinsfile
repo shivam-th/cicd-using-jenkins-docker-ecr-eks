@@ -2,6 +2,8 @@ pipeline {
     agent any
   environment {
         registry = '983877353540.dkr.ecr.us-east-1.amazonaws.com/cicd-using-jenkins-docker-ecr-eks-helm'
+        IMAGE_TAG = "${BUILD_NUMBER}"
+        ECR_URI = "${registry}:${IMAGE_TAG}"
   }
     stages {
 
@@ -45,12 +47,11 @@ pipeline {
           }
     }
 
-        stage('Helm Deploy') {
+        stage('Deploy') {
           steps {
             script {
-              def ecrUri = "${registry}:${BUILD_NUMBER}"
               sh'''
-              sed "s|<ECR_IMAGE_URI>|${ecrUri}|g" k8s/deployment.yaml| kubectl apply -f -
+              sed "s|<ECR_IMAGE_URI>|${ECR_URI}|g" k8s/deployment.yaml| kubectl apply -f -
               kubectl apply -f k8s/service.yaml
               '''
             }
