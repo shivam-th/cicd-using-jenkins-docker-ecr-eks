@@ -48,7 +48,11 @@ pipeline {
         stage('Helm Deploy') {
           steps {
             script {
-              sh "helm upgrade first --install helm/mychart --namespace helm-deployment --set image.tag=$BUILD_NUMBER"
+              def ecrUri = "${registry}:${BUILD_NUMBER}"
+              sh'''
+              sed "s|<ECR_fIMAGE_URI>|${ecrUri}|g" k8s/deployment.yaml| kubectl apply -f -
+              kubectl apply -f k8s/service.yaml
+              '''
             }
           }
         }
