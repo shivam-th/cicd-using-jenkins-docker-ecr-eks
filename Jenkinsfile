@@ -10,7 +10,7 @@ pipeline {
         stage('Deploy') {
           steps {
               sh """
-                aws sts get-caller-identity
+                kubectl get nodes
               """
           }
       }
