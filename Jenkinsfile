@@ -62,7 +62,7 @@ pipeline {
         script {
           echo 'Cleaning up Docker and Jenkins workspace...'
 
-                  // Remove unused Docker dataa
+                  // Remove unused Docker data
                   //sh 'sudo docker system prune -a -f'
 
                   // Clean Jenkins workspace
