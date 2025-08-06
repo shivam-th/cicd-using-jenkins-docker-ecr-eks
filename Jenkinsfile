@@ -4,9 +4,24 @@ pipeline {
         registry = '983877353540.dkr.ecr.us-east-1.amazonaws.com/cicd-using-jenkins-docker-ecr-eks-helm'
         IMAGE_TAG = "${BUILD_NUMBER}"
         ECR_URI = "${registry}:${IMAGE_TAG}"
+        AWS_ROLE_ARN = 'arn:aws:iam::983877353540:role/jenkins-oidc'
   }
     stages {
 
+
+        stage('Assume Role') {
+        steps {
+          withCredentials([file(credentialsId: 'aws-oidc-token', variable: 'AWS_WEB_IDENTITY_TOKEN_FILE')]) {
+            sh '''
+              aws sts assume-role-with-web-identity \
+                --role-arn $AWS_ROLE_ARN \
+                --role-session-name jenkinsSession \
+                --web-identity-token file://$AWS_WEB_IDENTITY_TOKEN_FILE
+            '''
+          }
+        }
+      }
+/*
       stage('Configure AWS') {
             steps {
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-eks-creds']]) {
@@ -17,6 +32,7 @@ pipeline {
                 }
             }
         }
+        */
         stage('Checkout') {
           steps {
             checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/shivam-th/cicd-using-jenkins-docker-ecr-eks.git']])
