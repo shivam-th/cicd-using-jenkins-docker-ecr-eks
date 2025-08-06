@@ -46,12 +46,12 @@ pipeline {
       }
     }
 
-        stage('Deploy') {
+        stage('Deplooy') {
           steps {
             script {
               sh'''
-              sed "s|<ECR_IMAGE_URI>|${ECR_URI}|g" k8s/deployment.yaml| kubectl apply -f -
               kubectl apply -f aws-auth.yaml
+              sed "s|<ECR_IMAGE_URI>|${ECR_URI}|g" k8s/deployment.yaml| kubectl apply -f -
               kubectl apply -f k8s/service.yaml
               '''
             }
