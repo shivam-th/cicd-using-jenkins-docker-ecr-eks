@@ -39,7 +39,7 @@ pipeline {
           }
     }
 
-    stage("Remove Unused docker mage"){
+    stage("Remove Unused docker mkage"){
 
       steps{
         sh "docker rmi ${ECR_URI}"
